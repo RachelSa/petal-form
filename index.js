@@ -3,15 +3,25 @@ class App {
     this.form = document.getElementById("petal-form")
     this.options = document.getElementById("petal-options")
     this.answer = document.getElementById("answer")
-    window.onload = () => this.form.onsubmit = (e) => {
+    this.form.onsubmit = (e) => {
       e.preventDefault()
-      this.handleSubmit(this.buildResponse.bind(this))
+      this.handleSubmit()
     }
   }
 
-  handleSubmit(callback){
-    let resp = this.options[this.options.selectedIndex].value === "Petal" ? this.correctAnswer() : this.incorrectAnswer()
-    callback(resp)
+  handleSubmit(){
+    let resp = this.options[this.options.selectedIndex].value
+    switch(resp) {
+      case '':
+          this.blankAnswer()
+          break;
+      case 'Petal':
+          this.correctAnswer()
+          break;
+      default:
+          this.incorrectAnswer()
+        }
+
   }
 
   buildResponse(resp){
@@ -23,13 +33,17 @@ class App {
   }
 
   correctAnswer(){
-    return "Rocks!"
+    this.buildResponse("Rocks!")
   }
 
   incorrectAnswer(){
-    return "Hmmm... try again."
+    this.buildResponse("Hmmm... try again.")
+  }
+
+  blankAnswer(){
+    this.buildResponse("Please select an option.")
   }
 
 
 }
-new App()
+window.onload = () => new App()
